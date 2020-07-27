@@ -10,12 +10,3 @@ resource "digitalocean_vpc" "this" {
   region      = var.region
   ip_range    = var.ip_range
 }
-
-resource "digitalocean_project_resources" "vpc_project" {
-  count = var.project_id != "" ? 1 : 0
-
-  project = var.project_id
-  resources = [
-    digitalocean_vpc.this.urn
-  ]
-}
