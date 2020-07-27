@@ -3,7 +3,8 @@ variable "vpc_name" {
 }
 
 variable "description" {
-  type = string
+  type    = string
+  default = ""
 }
 
 variable "region" {
@@ -11,5 +12,9 @@ variable "region" {
 }
 
 variable "ip_range" {
+  type = string
+}
+
+variable "project_id" {
   type = string
 }

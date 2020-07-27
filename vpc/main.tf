@@ -12,9 +12,9 @@ resource "digitalocean_vpc" "this" {
 }
 
 resource "digitalocean_project_resources" "vpc_project" {
-  count = var.project_name != "" ? 1 : 0
+  count = var.project_id != "" ? 1 : 0
 
-  project = var.project_name
+  project = var.project_id
   resources = [
     digitalocean_vpc.this.urn
   ]
