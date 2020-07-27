@@ -4,9 +4,13 @@ terraform {
 
 provider "digitalocean" {}
 
+data "digitalocean_image" "this" {
+  name = var.image_name
+}
+
 resource "digitalocean_droplet" "this" {
   name   = var.droplet_name
-  image  = var.image_name
+  image  = data.digitalocean_image.this.id
   region = var.region
   size   = var.size
 
