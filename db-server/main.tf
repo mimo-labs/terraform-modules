@@ -34,7 +34,7 @@ resource "digitalocean_record" "droplet_internal" {
   domain = var.domain_name
   type   = "A"
   name   = "db"
-  value  = digitalocean_droplet.this.ipv4_address
+  value  = digitalocean_droplet.this.ipv4_address_private
 }
 
 resource "digitalocean_firewall" "web_firewall" {
@@ -57,6 +57,12 @@ resource "digitalocean_firewall" "web_firewall" {
 
   outbound_rule {
     protocol              = "tcp"
+    port_range            = "1-65535"
+    destination_addresses = ["0.0.0.0/0"]
+  }
+
+  outbound_rule {
+    protocol              = "udp"
     port_range            = "1-65535"
     destination_addresses = ["0.0.0.0/0"]
   }
