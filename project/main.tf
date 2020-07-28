@@ -17,13 +17,9 @@ resource "digitalocean_project_resources" "internal_domain" {
 }
 
 resource "digitalocean_domain" "internal_domain" {
-  count = var.internal_domain_name != "" ? 1 : 0
-
   name = var.internal_domain_name
 }
 
 resource "digitalocean_domain" "external_domain" {
-  count = var.external_domain_name != "" ? 1 : 0
-
   name = var.external_domain_name
 }

@@ -12,6 +12,5 @@ variable "internal_domain_name" {
 }
 
 variable "external_domain_name" {
-  type    = string
-  default = ""
+  type = string
 }
