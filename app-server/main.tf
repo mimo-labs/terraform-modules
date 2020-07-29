@@ -68,7 +68,7 @@ resource "digitalocean_firewall" "web_firewall" {
   }
 
   outbound_rule {
-    protocol              = "tcp"
+    protocol              = "udp"
     port_range            = "1-65535"
     destination_addresses = ["0.0.0.0/0"]
   }
