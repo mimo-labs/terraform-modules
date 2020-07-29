@@ -37,6 +37,15 @@ resource "digitalocean_record" "droplet_internal" {
   value  = digitalocean_droplet.this.ipv4_address_private
 }
 
+resource "digitalocean_record" "droplet_external" {
+  count = var.external_domain_name != "" ? 1 : 0
+
+  domain = var.external_domain_name
+  type   = "A"
+  name   = var.external_domain_record
+  value  = digitalocean_droplet.this.ipv4_address
+}
+
 resource "digitalocean_firewall" "web_firewall" {
   name = "ssh-web-access"
   droplet_ids = [

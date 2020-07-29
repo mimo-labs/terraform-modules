@@ -37,3 +37,13 @@ variable "ssh_keys" {
   type    = list(string)
   default = []
 }
+
+variable "external_domain_name" {
+  type    = string
+  default = ""
+}
+
+variable "external_domain_record" {
+  type    = string
+  default = ""
+}
