@@ -33,7 +33,7 @@ resource "digitalocean_record" "droplet_internal" {
 
   domain = var.domain_name
   type   = "A"
-  name   = "app"
+  name   = var.private_record_name
   value  = digitalocean_droplet.this.ipv4_address_private
 }
 
@@ -42,48 +42,33 @@ resource "digitalocean_record" "droplet_external" {
 
   domain = var.external_domain_name
   type   = "A"
-  name   = var.external_domain_record
+  name   = var.public_record_name
   value  = digitalocean_droplet.this.ipv4_address
 }
 
-resource "digitalocean_firewall" "web_firewall" {
-  name = "ssh-web-access"
+resource "digitalocean_firewall" "this" {
+  count = var.firewall_name != "" ? 1 : 0
+
+  name = var.firewall_name
   droplet_ids = [
     digitalocean_droplet.this.id
   ]
 
-  inbound_rule {
-    protocol         = "tcp"
-    port_range       = "22"
-    source_addresses = ["0.0.0.0/0"]
+  dynamic "inbound_rule" {
+    for_each = var.firewall_inbound_rules
+    content {
+      protocol         = inbound_rule.value["protocol"]
+      port_range       = inbound_rule.value["port_range"]
+      source_addresses = inbound_rule.value["source_addresses"]
+    }
   }
 
-  inbound_rule {
-    protocol         = "tcp"
-    port_range       = "80"
-    source_addresses = ["0.0.0.0/0"]
-  }
-
-  inbound_rule {
-    protocol         = "tcp"
-    port_range       = "443"
-    source_addresses = ["0.0.0.0/0"]
-  }
-
-  outbound_rule {
-    protocol              = "tcp"
-    port_range            = "1-65535"
-    destination_addresses = ["0.0.0.0/0"]
-  }
-
-  outbound_rule {
-    protocol              = "udp"
-    port_range            = "1-65535"
-    destination_addresses = ["0.0.0.0/0"]
-  }
-
-  outbound_rule {
-    protocol              = "icmp"
-    destination_addresses = ["0.0.0.0/0"]
+  dynamic "outbound_rule" {
+    for_each = var.firewall_outbound_rules
+    content {
+      protocol              = outbound_rule.value["protocol"]
+      port_range            = outbound_rule.value["port_range"]
+      destination_addresses = outbound_rule.value["destination_addresses"]
+    }
   }
 }

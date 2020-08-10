@@ -5,3 +5,4 @@ output "droplet_ipv4" {
 output "droplet_fqdn" {
   value = length(digitalocean_record.droplet_external) > 0 ? digitalocean_record.droplet_external[0].fqdn : ""
 }
+
